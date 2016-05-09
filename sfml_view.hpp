@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 
+#include "union_find.hpp"
 #include "view.hpp"
 
 
@@ -22,4 +23,9 @@ class SFML_view
 
         std::vector<sf::Vertex> lines;
         std::vector<std::shared_ptr<sf::Shape> > shapes;
+
+        sf::Color foot_color;
+        sf::Color knee_color;
+        sf::Color hip_color;
+        sf::Color wire_color;
 };
