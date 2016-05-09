@@ -1,3 +1,10 @@
+#ifndef CONTROLLER_HPP
+#define CONTROLLER_HPP
+
+
+#include <memory>
+#include <vector>
+
 #include "view.hpp"
 
 
@@ -9,7 +16,10 @@ class Controller
 
         static void add_controller(std::shared_ptr<Controller> c);
         static bool is_controller_alive();
+        static void update_and_draw_all();
 
     private:
-        std::vector<std::shared_ptr<Controller> > controllers;
+        static std::vector<std::shared_ptr<Controller> > controllers;
 };
+
+#endif

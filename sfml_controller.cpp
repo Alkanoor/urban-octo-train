@@ -1,27 +1,32 @@
 #include "sfml_controller.hpp"
 
 
-SFML_controller::SFML_controller(std::shared_ptr<Model> model) :
+SFML_controller::SFML_controller(std::shared_ptr<Model> model, const sf::Color& col) :
     model(model),
+    background_color(col),
     window(sf::VideoMode(800, 600), "SFML window")
 {
     update_all_representations();
-    update_and_draw(false);
+    update_and_draw();
 }
 
 void SFML_controller::update_all_representations()
 {
+    update_comp_in_drawing = false;
     modified = model->get_all_elements();
+    model->empty_last_elements();
     update_components();
 }
 
-void SFML_controller::update_and_draw(bool update_comp)
+void SFML_controller::update_and_draw()
 {
-    if(update_comp)
+    if(update_comp_in_drawing)
     {
         modified = model->get_updated();
         update_components();
     }
+    else
+        update_comp_in_drawing = true;
 
     sf::Event event;
     while(window.pollEvent(event))
@@ -33,7 +38,7 @@ void SFML_controller::update_and_draw(bool update_comp)
                 update_all_representations();
     }
 
-    window.clear();
+    window.clear(background_color);
     for(auto view : views)
         view->draw();
     window.display();

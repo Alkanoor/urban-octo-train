@@ -1,4 +1,4 @@
-#include "Model.hpp"
+#include "model.hpp"
 
 
 const std::map<std::string,Element>& Modified_Set::last_modified()
@@ -9,9 +9,10 @@ const std::map<std::string,Element>& Modified_Set::last_modified()
 }
 
 const std::map<std::string,Element>& Modified_Set::current_elements() const
-{
-    return elements;
-}
+{return elements;}
+
+void Modified_Set::empty_last_elements()
+{lasts_updated.clear();}
 
 bool Modified_Set::modify(const std::string& name, const Element& elem)
 {
@@ -44,13 +45,16 @@ void Modified_Set::update_all()
 
 void Model::update()
 {
-    update_all();
+    update_();
     for(auto updatable : updatable_objects)
         updatable->update(elements.last_modified());
 }
 
-const std::map<std::string,Element>& Model::get_updated() const
+const std::map<std::string,Element>& Model::get_updated()
 {return elements.last_modified();}
 
 const std::map<std::string,Element>& Model::get_all_elements() const
 {return elements.current_elements();}
+
+void Model::empty_last_elements()
+{elements.empty_last_elements();}

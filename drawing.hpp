@@ -5,7 +5,7 @@
 #include "updatable.hpp"
 
 
-class View : public Updatable
+class Drawing : public Updatable
 {
     public:
         virtual void draw() = 0;
