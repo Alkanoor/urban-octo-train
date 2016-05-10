@@ -26,7 +26,7 @@ $(EXEC): $(OBJ)
 	$(CC) -o $@ $^ $(LDFLAGS)
 
 $(EXEC_DEBUG): $(OBJ)
-	$(CC) -o $@ $^ $(LDFLAGS_DEBUG)
+	$(CC) -o $@ $^ $(LDFLAGS) $(LDFLAGS_DEBUG)
 
 $(OBJ_DIR)/%.o: %.cpp
 	$(CC) -o $@ -c $< $(CFLAGS)

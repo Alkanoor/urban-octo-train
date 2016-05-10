@@ -13,17 +13,16 @@ const std::map<std::string,Element>& Modified_Set::current_elements() const
 
 void Modified_Set::empty_last_elements()
 {lasts_updated.clear();}
-
+#include <iostream>
 bool Modified_Set::modify(const std::string& name, const Element& elem)
 {
+    bool ret = false;
+    std::cout<<"Trying modify "<<name<<std::endl;
     if(elements.count(name))
-    {
-        lasts_updated[name] = elem;
-        elements[name] = elem;
-        return true;
-    }
-    else
-        return false;
+        ret = true;
+    lasts_updated[name] = elem;
+    elements[name] = elem;
+    return ret;
 }
 
 bool Modified_Set::modify_parameter(const std::string& name, const std::string& param_name, double val)
@@ -40,7 +39,6 @@ bool Modified_Set::modify_parameter(const std::string& name, const std::string& 
 
 void Modified_Set::update_all()
 {lasts_updated = elements;}
-
 
 
 void Model::update()
