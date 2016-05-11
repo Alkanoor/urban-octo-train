@@ -38,6 +38,8 @@ void Robot_model::update_()
         foots[3*i+2] = Element(coords);
     }
 
+    apply_cur_transformation();
+
     for(int i=0;i<N;i++)
     {
         std::string suffix;
@@ -52,4 +54,20 @@ void Robot_model::update_element(const std::string& name, Element& elem)
 {}
 
 void Robot_model::update_parameter(const std::string& name, const std::string& param_name, double val)
+{}
+
+#include <iostream>
+void Robot_model::update_angles_matrix(int dif_x, int dif_y, bool modify_points)
+{
+    std::cout<<dif_x<<" "<<dif_y<<std::endl;
+
+    if(modify_points)
+    {
+        theta += dif_y*theta_speed;
+        phi += dif_x*phi_speed;
+        apply_cur_transformation();
+    }
+}
+
+void Robot_model::apply_cur_transformation()
 {}

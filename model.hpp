@@ -41,6 +41,8 @@ class Model
         const std::map<std::string,Element>& get_all_elements() const;
         void empty_last_elements();
 
+        void add_updatable(std::shared_ptr<Updatable> updatable);
+
     protected:
         Modified_Set elements;
 

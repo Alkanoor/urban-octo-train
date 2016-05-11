@@ -2,6 +2,8 @@
 #define SFML_CONTROLLER_HPP
 
 
+#include <functional>
+
 #include "controller.hpp"
 #include "sfml_view.hpp"
 #include "model.hpp"
@@ -17,6 +19,7 @@ class SFML_controller : public Controller
         bool is_alive();
 
         void add_view(std::shared_ptr<SFML_view> view);
+        void set_mouse_callback(std::function<void(int,int)> callback);
 
     private:
         bool update_comp_in_drawing;
@@ -27,6 +30,10 @@ class SFML_controller : public Controller
 
         sf::Color background_color;
         sf::RenderWindow window;
+
+        bool pressed;
+        int prev_x, prev_y;
+        std::function<void(int,int)> mouse_callback;
 
         void update_components();
 };

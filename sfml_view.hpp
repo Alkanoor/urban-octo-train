@@ -27,6 +27,7 @@ class SFML_view : public View
         sf::RenderWindow* window;
         bool reset_view;
 
+        int N;
         std::vector<sf::Vertex> lines;
         std::vector<std::shared_ptr<sf::Shape> > shapes;
 

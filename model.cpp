@@ -13,11 +13,10 @@ const std::map<std::string,Element>& Modified_Set::current_elements() const
 
 void Modified_Set::empty_last_elements()
 {lasts_updated.clear();}
-#include <iostream>
+
 bool Modified_Set::modify(const std::string& name, const Element& elem)
 {
     bool ret = false;
-    std::cout<<"Trying modify "<<name<<std::endl;
     if(elements.count(name))
         ret = true;
     lasts_updated[name] = elem;
@@ -56,3 +55,13 @@ const std::map<std::string,Element>& Model::get_all_elements() const
 
 void Model::empty_last_elements()
 {elements.empty_last_elements();}
+
+#include <iostream>
+void Model::add_updatable(std::shared_ptr<Updatable> updatable)
+{
+    if(updatable)
+    {
+        updatable->update(elements.current_elements());
+        updatable_objects.push_back(updatable);
+    }
+}

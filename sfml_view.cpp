@@ -6,6 +6,7 @@ SFML_view::SFML_view(int type) :
     type(type),
     window(nullptr),
     reset_view(true),
+    N(-1),
     foot_color(sf::Color::Red),
     knee_color(sf::Color::Blue),
     hip_color(sf::Color::Green),
@@ -16,6 +17,7 @@ SFML_view::SFML_view(int type, const sf::FloatRect& rect, const sf::FloatRect& v
     type(type),
     window(nullptr),
     reset_view(false),
+    N(-1),
     foot_color(sf::Color::Red),
     knee_color(sf::Color::Blue),
     hip_color(sf::Color::Green),
@@ -34,7 +36,6 @@ void SFML_view::set_window(sf::RenderWindow* window)
 
 void SFML_view::draw()
 {
-    std::cout<<"DRAW"<<std::endl;
     if(window)
         window->setView(view);
     if(window)
@@ -46,18 +47,18 @@ void SFML_view::draw()
 
 void SFML_view::update(const std::map<std::string,Element>& elements)
 {
-    if(!elements.count("N"))
+    if(N<1&&!elements.count("N"))
     {
         std::cerr<<"Warning, no N found in elements"<<std::endl;
         return;
     }
+    else if(elements.count("N"))
+        N = elements.find("N")->second["val"];
 
-    int n = elements.find("N")->second["val"];
-    std::cout<<"We found n="<<n<<std::endl;
-    lines.resize(n*6);
-    shapes.resize(n*3);
-    std::vector<Point> all_hips(n);
-    for(int i=0;i<n;i++)
+    lines.resize(N*6);
+    shapes.resize(N*3);
+    std::vector<Point> all_hips(N);
+    for(int i=0;i<N;i++)
     {
         std::string suffix;
         suffix += (char)(i+'0');
