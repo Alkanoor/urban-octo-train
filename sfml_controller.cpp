@@ -5,7 +5,8 @@ SFML_controller::SFML_controller(std::shared_ptr<Model> model, const sf::Color& 
     model(model),
     background_color(col),
     window(sf::VideoMode(800, 600), "SFML window"),
-    pressed(false)
+    pressed_move(false),
+    pressed_zoom(false)
 {
     update_all_representations();
     update_and_draw();
@@ -41,25 +42,47 @@ void SFML_controller::update_and_draw()
                 window.close();
             else if(event.key.code == sf::Keyboard::Space)
                 update_all_representations();
+            else if(event.key.code == sf::Keyboard::Up && move_callback)
+                move_callback(0,1);
+            else if(event.key.code == sf::Keyboard::Down && move_callback)
+                move_callback(0,-1);
+            else if(event.key.code == sf::Keyboard::Right && move_callback)
+                move_callback(1,0);
+            else if(event.key.code == sf::Keyboard::Left && move_callback)
+                move_callback(-1,0);
         }
-        else if(event.type == sf::Event::MouseButtonPressed)
+        else if(event.type == sf::Event::MouseButtonPressed && !pressed_move && !pressed_zoom)
         {
-            if(!pressed)
+            if(event.mouseButton.button==1)
             {
                 prev_x = event.mouseButton.x;
                 prev_y = event.mouseButton.y;
+                pressed_zoom = true;
             }
-            pressed = true;
+            else
+                if(!pressed_move)
+                {
+                    prev_x = event.mouseButton.x;
+                    prev_y = event.mouseButton.y;
+                    pressed_move = true;
+                }
         }
         else if(event.type == sf::Event::MouseButtonReleased)
-            pressed = false;
+        {
+            pressed_move = false;
+            pressed_zoom = false;
+        }
         else if(event.type == sf::Event::MouseMoved)
-            if(pressed&&mouse_callback)
+        {
+            if(pressed_move&&mouse_callback)
             {
                 mouse_callback(event.mouseMove.x-prev_x,event.mouseMove.y-prev_y);
                 prev_x = event.mouseMove.x;
                 prev_y = event.mouseMove.y;
             }
+            else if(pressed_zoom&&scale_callback)
+                scale_callback(sqrt((event.mouseMove.x-prev_x)*(event.mouseMove.x-prev_x)+(event.mouseMove.y-prev_y)*(event.mouseMove.y-prev_y)));
+        }
     }
 
     window.clear(background_color);
@@ -83,6 +106,12 @@ void SFML_controller::add_view(std::shared_ptr<SFML_view> view)
 
 void SFML_controller::set_mouse_callback(std::function<void(int,int)> callback)
 {mouse_callback = callback;}
+
+void SFML_controller::set_move_callback(std::function<void(int,int)> callback)
+{move_callback = callback;}
+
+void SFML_controller::set_scale_callback(std::function<void(float)> callback)
+{scale_callback = callback;}
 
 void SFML_controller::update_components()
 {

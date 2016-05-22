@@ -43,6 +43,11 @@ void Modified_Set::update_all()
 void Model::update()
 {
     update_();
+    update_views();
+}
+
+void Model::update_views()
+{
     for(auto updatable : updatable_objects)
         updatable->update(elements.last_modified());
 }

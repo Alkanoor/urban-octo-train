@@ -20,6 +20,8 @@ class SFML_controller : public Controller
 
         void add_view(std::shared_ptr<SFML_view> view);
         void set_mouse_callback(std::function<void(int,int)> callback);
+        void set_move_callback(std::function<void(int,int)> callback);
+        void set_scale_callback(std::function<void(float)> callback);
 
     private:
         bool update_comp_in_drawing;
@@ -31,9 +33,11 @@ class SFML_controller : public Controller
         sf::Color background_color;
         sf::RenderWindow window;
 
-        bool pressed;
+        bool pressed_move, pressed_zoom;
         int prev_x, prev_y;
         std::function<void(int,int)> mouse_callback;
+        std::function<void(int,int)> move_callback;
+        std::function<void(float)> scale_callback;
 
         void update_components();
 };

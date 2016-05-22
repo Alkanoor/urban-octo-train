@@ -45,6 +45,8 @@ class Model
 
     protected:
         Modified_Set elements;
+        
+        void update_views();
 
     private:
         std::vector<std::shared_ptr<Updatable> > updatable_objects;

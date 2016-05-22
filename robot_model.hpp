@@ -2,34 +2,32 @@
 #define ROBOT_MODEL_HPP
 
 
-#include <cmath>
-
+#include "camera_model.hpp"
 #include "model.hpp"
 
 
 class Robot_model : public Model
 {
     public:
-        Robot_model(int n=6);
+        Robot_model(int n, std::shared_ptr<Camera_model> camera = std::shared_ptr<Camera_model>());
+        Robot_model(double body_radius=50, double leg_length=100, double foot_length=100, double body_to_leg_angle=120., double leg_to_foot_angle=30., int n=6, std::shared_ptr<Camera_model> camera = std::shared_ptr<Camera_model>());
 
         void update_();
         void update_element(const std::string& name, Element& elem);
         void update_parameter(const std::string& name, const std::string& param_name, double val);
 
-        void update_angles_matrix(int x, int y, bool modify_points = true);
-        void update_x_offset(int x);
-        void update_y_offset(int y);
-        void update_scale_factor(double r);
+        void update_for_view();
 
     private:
         int N;
         std::vector<Element> foots;
-        std::vector<Element> motor_angles;
 
-        double theta_speed, phi_speed;
-        double x_offset, y_offset, scale_factor, theta, phi;
+        double offset_x, offset_y, offset_z;
+        double lowest_point_body_angle, body_angle;
+        double body_radius, leg_length, foot_length;
+        std::vector<double> body_to_leg_angles, leg_angles, leg_to_foot_angles;
 
-        void apply_cur_transformation();
+        std::shared_ptr<Camera_model> camera;
 };
 
 #endif

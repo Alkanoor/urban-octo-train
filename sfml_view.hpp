@@ -12,8 +12,8 @@
 class SFML_view : public View
 {
     public:
-        SFML_view(int type = 1);
-        SFML_view(int type, const sf::FloatRect& rect, const sf::FloatRect& viewport);
+        SFML_view();
+        SFML_view(const sf::FloatRect& rect, const sf::FloatRect& viewport);
 
         void set_window(sf::RenderWindow* window);
 
@@ -21,8 +21,6 @@ class SFML_view : public View
         void update(const std::map<std::string,Element>& elements);
 
     private:
-        int type;
-
         sf::View view;
         sf::RenderWindow* window;
         bool reset_view;
