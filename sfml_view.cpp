@@ -31,7 +31,7 @@ void SFML_view::set_window(sf::RenderWindow* window)
     if(reset_view&&window)
         view = window->getView();
 }
-#include <iostream>
+
 void SFML_view::draw()
 {
     if(window)

@@ -3,10 +3,10 @@
 
 #include <iostream>
 Robot_model::Robot_model(int n, std::shared_ptr<Camera_model> cam) :
-    Robot_model(50,100,100,120.,30.,n,cam)
+    Robot_model(50,75,100,150.,20.,30.,n,cam)
 {}
 
-Robot_model::Robot_model(double body_radius, double leg_length, double foot_length, double body_to_leg_angle, double leg_to_foot_angle, int n, std::shared_ptr<Camera_model> cam) :
+Robot_model::Robot_model(double body_radius, double leg_length, double foot_length, double body_to_leg_angle, double leg_angle, double leg_to_foot_angle, int n, std::shared_ptr<Camera_model> cam) :
     N((n>256)?256:((n<3)?4:n+1)),
     offset_x(0),
     offset_y(0),
@@ -17,12 +17,10 @@ Robot_model::Robot_model(double body_radius, double leg_length, double foot_leng
     leg_length(leg_length),
     foot_length(foot_length),
     body_to_leg_angles(N,body_to_leg_angle),
-    leg_angles(N),
+    leg_angles(N,leg_angle),
     leg_to_foot_angles(N,leg_to_foot_angle),
     camera(cam)
-{
-    update_();
-}
+{}
 
 
 void Robot_model::update_()
@@ -30,7 +28,20 @@ void Robot_model::update_()
     elements.modify("N",Element("val",N));
     std::cout<<"Update elements with "<<N<<std::endl;
 
-    float scale = 100;
+    foots.resize(3*N);
+    for(int i=0;i<N;i++)
+    {
+        double theta = (float)(i)/(float)(N-1)*2.*M_PI;
+        double dir2_x = cos(leg_angles[i]/180.*M_PI+theta);
+        double dir2_y = sin(leg_angles[i]/180.*M_PI+theta);
+        double beta = body_to_leg_angles[i]/180.*M_PI;
+        double gamma = leg_to_foot_angles[i]/180.*M_PI;
+        foots[3*i+2] = glm::vec3(cos(theta)*body_radius,sin(theta)*body_radius,0);
+        foots[3*i+1] = foots[3*i+2]+glm::vec3(-leg_length*dir2_x*cos(beta),-leg_length*dir2_y*cos(beta),leg_length*sin(beta));
+        foots[3*i] = foots[3*i+1]+glm::vec3(foot_length*dir2_x*cos(gamma),foot_length*dir2_y*cos(gamma),-foot_length*sin(gamma));
+    }
+
+    /*float scale = 100;
     float offX = 0, offY = 0, offZ = 0;
     foots.resize(3*N);
     std::map<std::string,double> coords;
@@ -55,7 +66,7 @@ void Robot_model::update_()
         coords["z"] = 3*scale+offZ;
         std::cout<<coords["x"]<<" "<<coords["y"]<<" "<<coords["z"]<<std::endl;
         foots[3*i+2] = Element(coords);
-    }
+    }*/
 
     update_for_view();
 }
@@ -66,15 +77,14 @@ void Robot_model::update_element(const std::string& name, Element& elem)
 void Robot_model::update_parameter(const std::string& name, const std::string& param_name, double val)
 {}
 
-void Robot_model::update_global_parameters()
+/*void Robot_model::update_global_parameters()
 {
     glm::vec3 gravity_center = ;
     lowest_point_body_angle = ;
     body_angle = ;
     std::vector<glm::vec3> lowest_points = ;
     if(lowest_points != previous_lowest_points)
-
-}
+}*/
 
 void Robot_model::update_for_view()
 {
@@ -84,8 +94,7 @@ void Robot_model::update_for_view()
     std::map<std::string,double> coords;
     for(unsigned int i=0;i<foots.size();i++)
     {
-        Element cur = foots[i];
-        glm::vec3 transformed = camera->get_transformed(glm::vec3(cur["x"],cur["y"],cur["z"]));
+        glm::vec3 transformed = camera->get_transformed(foots[i]);
         coords["x"] = transformed.x;
         coords["y"] = transformed.y;
         std::string suffix;
