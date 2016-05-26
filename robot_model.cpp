@@ -22,6 +22,18 @@ Robot_model::Robot_model(double body_radius, double leg_length, double foot_leng
     camera(cam)
 {}
 
+void update_time(int t)
+{
+    int time = 0;
+    int i=0;
+    for(;i<millis_time_periods.size()&&t>time;i++)
+        if(millis_time_periods[i])
+            time += millis_time_periods[i];
+
+    if(i<millis_time_periods.size())
+        update_
+    std::vector<Legs> steps;
+}
 
 void Robot_model::update_()
 {

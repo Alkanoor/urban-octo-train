@@ -22,6 +22,7 @@ class SFML_controller : public Controller
         void set_mouse_callback(std::function<void(int,int)> callback);
         void set_move_callback(std::function<void(int,int)> callback);
         void set_scale_callback(std::function<void(float)> callback);
+        void set_time_callback(std::function<void(int)> callback);
 
     private:
         bool update_comp_in_drawing;
@@ -33,11 +34,15 @@ class SFML_controller : public Controller
         sf::Color background_color;
         sf::RenderWindow window;
 
+        sf::Clock clock;
+        sf::Time elapsed_time;
+
         bool pressed_move, pressed_zoom;
         int prev_x, prev_y;
         std::function<void(int,int)> mouse_callback;
         std::function<void(int,int)> move_callback;
         std::function<void(float)> scale_callback;
+        std::function<void(int)> time_callback;
 
         void update_components();
 };

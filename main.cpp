@@ -14,6 +14,7 @@ int main()
     controller->set_mouse_callback(std::bind(&Camera_model::update_angles_matrix,camera_model,std::placeholders::_1,std::placeholders::_2));
     controller->set_move_callback(std::bind(&Camera_model::update_position_matrix,camera_model,std::placeholders::_1,std::placeholders::_2));
     controller->set_scale_callback(std::bind(&Camera_model::update_scale_factor,camera_model,std::placeholders::_1));
+    controller->set_time_callback(std::bind(&Robot_model::update_time,model,std::placeholders::_1));
     Controller::add_controller(controller);
 
     while(Controller::is_controller_alive())

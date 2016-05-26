@@ -31,6 +31,10 @@ void SFML_controller::update_and_draw()
     else
         update_comp_in_drawing = true;
 
+    elapsed_time = clock.getElapsedTime();
+    if(time_callback)
+        time_callback(elapsed_time.asMilliseconds());
+
     sf::Event event;
     while(window.pollEvent(event))
     {
@@ -50,6 +54,8 @@ void SFML_controller::update_and_draw()
                 move_callback(1,0);
             else if(event.key.code == sf::Keyboard::Left && move_callback)
                 move_callback(-1,0);
+            else if(event.key.code == sf::Keyboard::Return)
+                clock.restart();
         }
         else if(event.type == sf::Event::MouseButtonPressed && !pressed_move && !pressed_zoom)
         {
@@ -112,6 +118,9 @@ void SFML_controller::set_move_callback(std::function<void(int,int)> callback)
 
 void SFML_controller::set_scale_callback(std::function<void(float)> callback)
 {scale_callback = callback;}
+
+void SFML_controller::set_time_callback(std::function<void(int)> callback)
+{time_callback = callback;}
 
 void SFML_controller::update_components()
 {
