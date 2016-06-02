@@ -2,7 +2,7 @@
 #define VIEW_HPP
 
 
-#include "updatable.hpp"
+#include "../core/updatable.hpp"
 
 
 class View : public Updatable

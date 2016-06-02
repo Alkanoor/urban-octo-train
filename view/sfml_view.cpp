@@ -1,4 +1,4 @@
-#include "union_find.hpp"
+#include "../utils/union_find.hpp"
 #include "sfml_view.hpp"
 
 
@@ -54,6 +54,7 @@ void SFML_view::update(const std::map<std::string,Element>& elements)
         N = elements.find("N")->second["val"];
 
     float prev_x, prev_y, init_x, init_y;
+    bool first = true;
     lines.resize(N*6);
     shapes.resize(N*3);
     std::vector<Point> all_hips(N);
@@ -98,7 +99,7 @@ void SFML_view::update(const std::map<std::string,Element>& elements)
             lines[6*i+1] = sf::Vertex(sf::Vector2f(x2,y2),wire_color);
             lines[6*i+2] = sf::Vertex(sf::Vector2f(x2,y2),wire_color);
             lines[6*i+3] = sf::Vertex(sf::Vector2f(x3,y3),wire_color);
-            if(i>0)
+            if(!first)
             {
                 lines[6*i+4] = sf::Vertex(sf::Vector2f(x3,y3),wire_color);
                 lines[6*i+5] = sf::Vertex(sf::Vector2f(prev_x,prev_y),wire_color);
@@ -111,6 +112,7 @@ void SFML_view::update(const std::map<std::string,Element>& elements)
                 init_y = y3;
                 prev_x = x3;
                 prev_y = y3;
+                first = false;
             }
 
             all_hips[i] = Point(x3,y3);
@@ -118,8 +120,11 @@ void SFML_view::update(const std::map<std::string,Element>& elements)
         else
             all_hips[i] = Point(shapes[3*i+2]->getPosition().x,shapes[3*i+2]->getPosition().y);
     }
-    lines[4] = sf::Vertex(sf::Vector2f(init_x,init_y),wire_color);
-    lines[5] = sf::Vertex(sf::Vector2f(prev_x,prev_y),wire_color);
+    if(!first)
+    {
+        lines[4] = sf::Vertex(sf::Vector2f(init_x,init_y),wire_color);
+        lines[5] = sf::Vertex(sf::Vector2f(prev_x,prev_y),wire_color);
+    }
 
     /*std::vector<Edge> minimized = minimum_spanning_tree(all_hips,true);
     for(unsigned int i=0;i<minimized.size()&&6*i+5<lines.size();i++)

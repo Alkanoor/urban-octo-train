@@ -5,7 +5,7 @@
 #include <memory>
 #include <vector>
 
-#include "view.hpp"
+#include "../view/view.hpp"
 
 
 class Controller

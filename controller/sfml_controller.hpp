@@ -4,9 +4,9 @@
 
 #include <functional>
 
+#include "../view/sfml_view.hpp"
+#include "../model/model.hpp"
 #include "controller.hpp"
-#include "sfml_view.hpp"
-#include "model.hpp"
 
 
 class SFML_controller : public Controller
@@ -36,6 +36,7 @@ class SFML_controller : public Controller
 
         sf::Clock clock;
         sf::Time elapsed_time;
+        bool call_time;
 
         bool pressed_move, pressed_zoom;
         int prev_x, prev_y;

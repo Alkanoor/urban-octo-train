@@ -5,6 +5,7 @@ SFML_controller::SFML_controller(std::shared_ptr<Model> model, const sf::Color& 
     model(model),
     background_color(col),
     window(sf::VideoMode(800, 600), "SFML window"),
+    call_time(false),
     pressed_move(false),
     pressed_zoom(false)
 {
@@ -32,7 +33,7 @@ void SFML_controller::update_and_draw()
         update_comp_in_drawing = true;
 
     elapsed_time = clock.getElapsedTime();
-    if(time_callback)
+    if(time_callback&&call_time)
         time_callback(elapsed_time.asMilliseconds());
 
     sf::Event event;
@@ -56,6 +57,13 @@ void SFML_controller::update_and_draw()
                 move_callback(-1,0);
             else if(event.key.code == sf::Keyboard::Return)
                 clock.restart();
+            else if(event.key.code == sf::Keyboard::S)
+            {
+                call_time = true;
+                clock.restart();
+            }
+            else if(event.key.code == sf::Keyboard::T)
+                call_time = false;
         }
         else if(event.type == sf::Event::MouseButtonPressed && !pressed_move && !pressed_zoom)
         {

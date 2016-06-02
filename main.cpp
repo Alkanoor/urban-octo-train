@@ -1,6 +1,6 @@
-#include "sfml_controller.hpp"
-#include "robot_model.hpp"
-#include "sfml_view.hpp"
+#include "controller/sfml_controller.hpp"
+#include "model/robot_model.hpp"
+#include "view/sfml_view.hpp"
 
 
 int main()
@@ -16,6 +16,19 @@ int main()
     controller->set_scale_callback(std::bind(&Camera_model::update_scale_factor,camera_model,std::placeholders::_1));
     controller->set_time_callback(std::bind(&Robot_model::update_time,model,std::placeholders::_1));
     Controller::add_controller(controller);
+
+    Leg temp_leg(6,Leg_angles(0,150.,10.,70.));
+    for(int i=0;i<6;i++)
+        temp_leg[i].body_angle = (float)(i)/(float)(6)*2.*M_PI;
+    model->add_step(temp_leg, 1000);
+
+    for(int i=0;i<6;i++)
+    {
+        temp_leg[i].body_to_leg_angle = 100.;
+        temp_leg[i].leg_angle = -20.;
+        temp_leg[i].leg_to_foot_angle = 30.;
+    }
+    model->add_step(temp_leg, 1000);
 
     while(Controller::is_controller_alive())
         Controller::update_and_draw_all();

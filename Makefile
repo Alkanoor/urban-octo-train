@@ -1,9 +1,13 @@
 OBJ_DIR = obj
 SRC_DIR1 = .
-SRC_DIR2 = src
-SRC = $(wildcard $(SRC_DIR2)/*.cpp) $(wildcard $(SRC_DIR1)/*.cpp)
+SRC_DIR2 = controller
+SRC_DIR3 = core
+SRC_DIR4 = model
+SRC_DIR5 = utils
+SRC_DIR6 = view
+SRC = $(wildcard $(SRC_DIR1)/*.cpp) $(wildcard $(SRC_DIR2)/*.cpp) $(wildcard $(SRC_DIR3)/*.cpp) $(wildcard $(SRC_DIR4)/*.cpp) $(wildcard $(SRC_DIR5)/*.cpp) $(wildcard $(SRC_DIR6)/*.cpp)
 OBJ := $(patsubst %.cpp, $(OBJ_DIR)/%.o, $(notdir $(SRC)))
-VPATH=.:src
+VPATH=.:controller:core:model:utils:view
 
 
 RELEASE_DIR = bin

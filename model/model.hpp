@@ -7,8 +7,8 @@
 #include <string>
 #include <map>
 
-#include "updatable.hpp"
-#include "element.hpp"
+#include "../core/updatable.hpp"
+#include "../core/element.hpp"
 
 
 class Modified_Set
@@ -45,7 +45,7 @@ class Model
 
     protected:
         Modified_Set elements;
-        
+
         void update_views();
 
     private:
