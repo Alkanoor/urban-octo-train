@@ -63,7 +63,6 @@ void Robot_model::update_()
         return;
 
     elements.modify("N",Element("val",N));
-    std::cout<<"Update elements with "<<N<<std::endl;
 
     foots.resize(3*N);
     for(int i=0;i<N;i++)
@@ -161,6 +160,33 @@ void Robot_model::update_global_parameters(const Leg& leg1, const Leg& leg2, dou
 #include <glm/gtx/string_cast.hpp>
 void Robot_model::find_coplanar_points(const std::vector<glm::vec3>& current_foots)
 {
-    for(unsigned int i=0;i<1;i++)
-        std::cout<<glm::to_string(current_foots[i])<<std::endl;
+    if(current_foots.size()<3)
+        return;
+    else if(current_foots.size()==3)
+        coplanars = {0,1,2};
+
+    int index_lowest_point = ;
+    std::vector<std::vector<glm::vec3> > convex_hull_at_p(current_foots,index_lowest_point);
+
+    std::map<int,bool> used;
+    std::vector<int> cur_index;
+    for(unsigned int i=0;i+3<current_foots.size();i++)
+    {
+        if(!i)
+        {
+            cur_index.push_back(i);
+            cur_index.push_back(i+1);
+            cur_index.push_back(i+2);
+        }
+        Plan p(current_foots[cur_index[0]],current_foots[cur_index[1]],current_foots[cur_index[2]]);
+        char type = p.position_from_plan(current_foots[i+3]);
+        if(type<=2) //point is at same level : we add it
+        {
+
+        }
+        else if(type==4) //point is below the plan (vertically) so we create the new lowest plan
+        {
+
+        }
+    }
 }

@@ -2,6 +2,8 @@
 #include "model/robot_model.hpp"
 #include "view/sfml_view.hpp"
 
+#include "utils/linear_algebra.hpp"
+
 
 int main()
 {
@@ -21,6 +23,17 @@ int main()
     for(int i=0;i<6;i++)
         temp_leg[i].body_angle = (float)(i)/(float)(6)*2.*M_PI;
     model->add_step(temp_leg, 1000);
+
+    Plan p(glm::vec3(1,0,0), glm::vec3(0,1,0), glm::vec3(-1,-1,1));
+    std::cout<<(int)p.position_from_plan(glm::vec3(1,1,1))<<std::endl;
+    std::cout<<(int)p.position_from_plan(glm::vec3(-1,1,1))<<std::endl;
+    std::cout<<(int)p.position_from_plan(glm::vec3(1,-1,1))<<std::endl;
+    std::cout<<(int)p.position_from_plan(glm::vec3(-1,-1,1))<<std::endl;
+    std::cout<<(int)p.position_from_plan(glm::vec3(1,1,-1))<<std::endl;
+    std::cout<<(int)p.position_from_plan(glm::vec3(-1,1,-1))<<std::endl;
+    std::cout<<(int)p.position_from_plan(glm::vec3(1,-1,-1))<<std::endl;
+    std::cout<<(int)p.position_from_plan(glm::vec3(-1,-1,-1))<<std::endl;
+    return 0;
 
     for(int i=0;i<6;i++)
     {
