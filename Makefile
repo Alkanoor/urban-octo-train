@@ -17,8 +17,8 @@ EXEC_DEBUG =$(RELEASE_DEBUG_DIR)/sfml_test
 
 
 CC = g++
-CFLAGS = -Wall -Werror -O1 -std=c++11
-LDFLAGS = -lsfml-graphics -lsfml-window -lsfml-system
+CFLAGS = -Wall -Werror -O1 -std=c++11 -frounding-math
+LDFLAGS = -lsfml-graphics -lsfml-window -lsfml-system -frounding-math -lCGAL -lgmp -lmpfr
 LDFLAGS_DEBUG = -g
 
 

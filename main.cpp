@@ -25,21 +25,21 @@ int main()
     model->add_step(temp_leg, 1000);
 
     Plan p(glm::vec3(1,0,0), glm::vec3(0,1,0), glm::vec3(-1,-1,1));
-    std::cout<<(int)p.position_from_plan(glm::vec3(1,1,1))<<std::endl;
-    std::cout<<(int)p.position_from_plan(glm::vec3(-1,1,1))<<std::endl;
-    std::cout<<(int)p.position_from_plan(glm::vec3(1,-1,1))<<std::endl;
-    std::cout<<(int)p.position_from_plan(glm::vec3(-1,-1,1))<<std::endl;
-    std::cout<<(int)p.position_from_plan(glm::vec3(1,1,-1))<<std::endl;
-    std::cout<<(int)p.position_from_plan(glm::vec3(-1,1,-1))<<std::endl;
-    std::cout<<(int)p.position_from_plan(glm::vec3(1,-1,-1))<<std::endl;
-    std::cout<<(int)p.position_from_plan(glm::vec3(-1,-1,-1))<<std::endl;
-    return 0;
 
     for(int i=0;i<6;i++)
     {
-        temp_leg[i].body_to_leg_angle = 100.;
-        temp_leg[i].leg_angle = -20.;
-        temp_leg[i].leg_to_foot_angle = 30.;
+        if(!(i%2))
+        {
+            temp_leg[i].body_to_leg_angle = 100.;
+            temp_leg[i].leg_angle = -20.;
+            temp_leg[i].leg_to_foot_angle = 30.;
+        }
+        else
+        {
+            temp_leg[i].body_to_leg_angle = 120.;
+            temp_leg[i].leg_angle = -10.;
+            temp_leg[i].leg_to_foot_angle = 50.;
+        }
     }
     model->add_step(temp_leg, 1000);
 

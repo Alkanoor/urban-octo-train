@@ -157,15 +157,43 @@ void Robot_model::update_global_parameters(const Leg& leg1, const Leg& leg2, dou
     update_();
 }
 
+struct Plane_from_facet {
+  Polyhedron_3::Plane_3 operator()(Polyhedron_3::Facet& f) {
+      Polyhedron_3::Halfedge_handle h = f.halfedge();
+      return Polyhedron_3::Plane_3( h->vertex()->point(),
+                                    h->next()->vertex()->point(),
+                                    h->opposite()->vertex()->point());
+  }
+};
+
 #include <glm/gtx/string_cast.hpp>
 void Robot_model::find_coplanar_points(const std::vector<glm::vec3>& current_foots)
 {
-    if(current_foots.size()<3)
+    /*if(current_foots.size()<3)
         return;
     else if(current_foots.size()==3)
-        coplanars = {0,1,2};
+        coplanars = {0,1,2};*/
 
-    int index_lowest_point = ;
+
+    std::vector<Custom_point> points(current_foots.size());
+
+    for(unsigned int i=0;i<current_foots.size();i++)
+        points[i] = Custom_point(i,current_foots[i][0],current_foots[i][1],current_foots[i][2]);
+
+    Polyhedron_3 poly;
+
+    CGAL::convex_hull_3(points.begin(), points.end(), poly);
+    std::cout << "The convex hull contains " << poly.size_of_vertices() << " vertices" << std::endl;
+
+    std::transform(poly.facets_begin(), poly.facets_end(), poly.planes_begin(), Plane_from_facet());
+
+    for(auto it = poly.planes_begin(); it != poly.planes_end(); it++)
+        std::cout<<it->a()<<" "<<it->b()<<" "<<it->c()<<std::endl;
+
+    for(auto it = poly.facets_begin(); it != poly.facets_end(); it++)
+        std::cout<<it->
+
+    /*int index_lowest_point = ;
     std::vector<std::vector<glm::vec3> > convex_hull_at_p(current_foots,index_lowest_point);
 
     std::map<int,bool> used;
@@ -188,5 +216,5 @@ void Robot_model::find_coplanar_points(const std::vector<glm::vec3>& current_foo
         {
 
         }
-    }
+    }*/
 }

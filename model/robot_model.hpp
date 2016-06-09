@@ -2,8 +2,39 @@
 #define ROBOT_MODEL_HPP
 
 
+#include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
+#include <CGAL/convex_hull_3.h>
+#include <CGAL/Polyhedron_3.h>
+#include <CGAL/algorithm.h>
+
 #include "camera_model.hpp"
 #include "model.hpp"
+
+
+typedef CGAL::Simple_cartesian<double>     Kernel;
+typedef Kernel::Point_3                    Point_3;
+typedef CGAL::Polyhedron_3<Kernel>         Polyhedron_3;
+typedef Polyhedron_3::Vertex_iterator        Vertex_iterator;
+typedef Polyhedron_3::Facet                  Facet;
+typedef Polyhedron_3::Facet_iterator         Facet_iterator;
+typedef Polyhedron_3::Halfedge_handle        Halfedge_handle;
+typedef Polyhedron_3::Halfedge_around_facet_circulator     Halfedge_around_facet_circulator;
+
+
+class Custom_point : public Point_3
+{
+    public:
+        Custom_point(int id=0, double x=0, double y=0, double z=0) :
+            Point_3(x,y,z),
+            id(id)
+        {}
+
+        int get_id() const
+        {return id;}
+
+    private:
+        int id;
+};
 
 
 class Leg_angles
